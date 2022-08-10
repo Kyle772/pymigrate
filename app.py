@@ -1,13 +1,5 @@
-from flask import Flask, jsonify, request, Response
-from py3dbp import Packer, Bin, Item
-from urllib.parse import urlparse, parse_qs
-from copy import deepcopy
-import requests
+from flask import Flask
 from dotenv import load_dotenv
-import os
-from geopy.geocoders import Nominatim
-from math import radians, cos, sin, asin, sqrt
-import json
 
 app = Flask(__name__)
 load_dotenv()
