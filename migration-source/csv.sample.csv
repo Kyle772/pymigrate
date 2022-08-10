@@ -1,5 +1,5 @@
-ID,Title,Content,Excerpt,Date,"Post Type",Permalink,URL,Title,Caption,Description,"Alt Text",Featured,URL,"Store Categories",_wpas_done_all,custom_page_title,laborator_meta_description,laborator_meta_keywords,laborator_meta_robots_index,laborator_meta_robots_follow,wpsl_address,wpsl_city,wpsl_state,wpsl_zip,wpsl_country,wpsl_country_iso,wpsl_lat,wpsl_lng,wpsl_phone,wpsl_url,_vc_post_settings,slide_template,wpsl_hours,wpsl_email,wpsl_address2,rs_page_bg_color,wpsl_fax,_wp_trash_meta_status,_wp_trash_meta_time,_wp_desired_post_slug,Status,"Author ID","Author Username","Author Email","Author First Name","Author Last Name",Slug,Format,Template,Parent,"Parent Slug",Order,"Comment Status","Ping Status","Post Modified Date"
-1,"Sample Business",,,"2016-01-07 14:19:38",wpsl_stores,,,,1,,,,,,"123 Address St","New York",NY,12345,"United States",US,,,123-123-1234,https://www.website.com,"a:2:{s:7:""vc_grid"";a:0:{}s:10:""vc_grid_id"";a:0:{}}",default,"Monday: 10:00 AM - 7:00 PM
+ID|Title|Content|Excerpt|Date|"Post Type"|Permalink|URL|Title|Caption|Description|"Alt Text"|Featured|URL|"Store Categories"|_wpas_done_all|custom_page_title|laborator_meta_description|laborator_meta_keywords|laborator_meta_robots_index|laborator_meta_robots_follow|wpsl_address|wpsl_city|wpsl_state|wpsl_zip|wpsl_country|wpsl_country_iso|wpsl_lat|wpsl_lng|wpsl_phone|wpsl_url|_vc_post_settings|slide_template|wpsl_hours|wpsl_email|wpsl_address2|rs_page_bg_color|wpsl_fax|_wp_trash_meta_status|_wp_trash_meta_time|_wp_desired_post_slug|Status|"Author ID"|"Author Username"|"Author Email"|"Author First Name"|"Author Last Name"|Slug|Format|Template|Parent|"Parent Slug"|Order|"Comment Status"|"Ping Status"|"Post Modified Date"
+1|"Sample Business"|||"2016-01-07 14:19:38"|wpsl_stores|||sample-business|||||||||||||"123 Address st"|"San Diego"|CA|12312|"United States"|US|00.00|00.00|555-123-1234||"a:2:{s:7:""vc_grid"";a:0:{}s:10:""vc_grid_id"";a:0:{}}"|default|"Monday: 10:00 AM - 7:00 PM
 Tuesday: 10:00 AM - 7:00 PM
 Wednesday: 10:00 AM - 7:00 PM
 Thursday: 10:00 AM - 7:00 PM
@@ -7,4 +7,4 @@ Friday: 10:00 AM - 7:00 PM
 Saturday: 10:00 AM - 6:00 PM
 Sunday: Closed
 
-*Hours subject to change*",,,,,,,,publish,,,,,,,,,0,0,0,closed,closed,"2019-01-24 17:57:29"
+*Hours subject to change*"|""|||||||publish|1|user|user@user.com|User|Name|sample-business|||0|0|0|closed|closed|"2019-01-24 17:57:29"
