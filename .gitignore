@@ -1,6 +1,7 @@
 migration-source/**
 migrated/**
 *.env
+!*.sample*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
