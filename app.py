@@ -13,6 +13,11 @@ app = Flask(__name__)
 load_dotenv()
 
 
+@app.route('/')
+def index():
+    return 'Hello World!'
+
+
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Headers',

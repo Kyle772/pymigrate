@@ -1,0 +1,15 @@
+version: "3.3"
+services:
+    py-migrate:
+        container_name: py-migrate
+        image: python:3-alpine
+        volumes:
+            - .:/usr/src/app
+        environment:
+            FLASK_DEBUG: 1
+            FLASK_APP: ./app.py
+        ports:
+            - "5000:5000"
+        build:
+            context: .
+            dockerfile: Dockerfile
