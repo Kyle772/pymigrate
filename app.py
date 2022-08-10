@@ -1,8 +1,19 @@
 from flask import Flask
 from dotenv import load_dotenv
+import json
+import os
 
 app = Flask(__name__)
 load_dotenv()
+
+
+def load_json(filename):
+    path = os.path.abspath(os.path.dirname(__file__)) + \
+        filename
+    app.logger.info(path)
+    f = open(path, 'r')
+    data = json.load(f)
+    return data
 
 
 @app.route('/')
@@ -10,7 +21,18 @@ def index():
     return 'Hello World!'
 
 
-@app.after_request
+@app.route('/translate')
+def translate():
+    schema = load_json('/schemas/json.sample.json')
+
+    for value in schema:
+        app.logger.info(value)
+
+    response = json.dumps(schema)
+    return response
+
+
+@ app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Headers',
                          'Content-Type, Authorization')
