@@ -41,11 +41,12 @@ def cleanup(file):
 
 
 # Templating
-def replace_variables(json_string, data, relevantColumns):
-    for key, value in relevantColumns.items():
+def replace_variables(json_string, data, lookup):
+    # Lookup is a dictionary of column name to index
+    for key, value in lookup.items():
         app.logger.info(key, value)
         json_string = re.sub(r'{{ (.*' + key + '?) }}',
-                             data[relevantColumns[key]], json_string)
+                             data[lookup[key]], json_string)
     return json_string
 
 
@@ -68,9 +69,8 @@ def flatten_json(y):
     flatten(y)
     return out
 
+
 # Relevant columns
-
-
 def getColNames(reader):
     column_names = []
     for row in reader:
@@ -81,6 +81,10 @@ def getColNames(reader):
 
 
 def getColumnIndexes(reader, data_template):
+    # Used for replacing variables in json template
+    # by providing an index to the relevant column
+    # ie row[lookup[Title]]
+
     column_names = getColNames(reader)
     relevantColumns = {}
     for value in data_template.values():
@@ -117,9 +121,8 @@ def convert(
 
     return json.dumps(entries)
 
+
 # Flask Routes
-
-
 @app.route('/')
 def index():
     return 'Hello World!'
