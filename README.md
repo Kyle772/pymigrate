@@ -7,7 +7,9 @@ Give it a shot!
 ## Running
 
 Run `pymigrate.convert(migration_source_pathname, schema_pathname, middleware_pathname, delimiter, quotechar)`
+
 OR
+
 Run `pymigrate.convertFiles(["sample", "customers", "products"], delimeter="|", quotechar=",")`
 
 Your converted file in json format will be generated and saved into `/migrated/`
