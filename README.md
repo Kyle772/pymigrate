@@ -14,7 +14,7 @@ Run `pymigrate.convertFiles(["sample", "customers", "products"], delimeter="|", 
 
 Your converted file in json format will be generated and saved into `/migrated/`
 
-`csv.sample.json`
+`sample.json`
 ```
 [{"business_name": "Sample Business", "address": {"street": "123 Address st", "city": "San Diego", "state": "CA", "zip": "12312", "country": "United States"}}]
 ```
