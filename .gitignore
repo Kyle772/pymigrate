@@ -3,9 +3,9 @@ migrated/**
 *.env
 middleware/*.py
 !__init__.py
-!*.sample*
 *.csv
 *.json
+!sample.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
