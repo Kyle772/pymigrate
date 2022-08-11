@@ -1,6 +1,8 @@
 migration-source/**
 migrated/**
 *.env
+middleware/*.py
+!__init__.py
 !*.sample*
 *.csv
 *.json
