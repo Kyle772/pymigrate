@@ -18,7 +18,7 @@ def load_json(filename):
     path = os.path.abspath(os.path.dirname(__file__)) + \
         filename
     # app.logger.info(path)
-    f = open(path, 'r')
+    f = open(path, 'r', encoding='utf-8-sig')
     data = json.load(f)
     f.close()
     return data
@@ -29,7 +29,7 @@ def load_csv(filename, delimiter='|', quotechar='"'):
         filename
 
     reader = None
-    file = open(path, 'r')
+    file = open(path, 'r', encoding='utf-8-sig')
     reader = csv.reader(file, delimiter=delimiter, quotechar=quotechar)
 
     return file, reader
@@ -116,7 +116,7 @@ def convert(
     # Make filename
     filename = file.name.replace(
         'migration-source', 'migrated').rsplit('.', maxsplit=1)[0] + '.json'
-    with open(filename, 'w') as outfile:
+    with open(filename, 'w', encoding='utf-8-sig') as outfile:
         json.dump(entries, outfile)
 
     return json.dumps(entries)
@@ -148,7 +148,7 @@ def translate():
 
     for i in range(0, len(sources)):
         app.logger.info(i)
-        convert(sources[i], schemas[i])
+        convert(sources[i], schemas[i], ",", '"')
 
     return "success"
 
