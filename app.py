@@ -152,6 +152,20 @@ def convert(
     return json.dumps(entries)
 
 
+def convertFiles(filenames, delimiter='|', quotechar='"'):
+    # generate source files from filenames at /migration-source/xxx.csv
+    for filename in filenames:
+        convert(
+            '/migration-source/' + filename + '.csv',
+            '/schemas/' + filename + '.json',
+            '/middleware/' + filename + '.py',
+            delimiter,
+            quotechar
+        )
+
+    return "success"
+
+
 # Flask Routes
 @app.route('/translate')
 def translate():
@@ -163,15 +177,7 @@ def translate():
         # 'reviews',
     ]
 
-    # generate source files from filenames at /migration-source/xxx.csv
-    for filename in filenames:
-        convert(
-            '/migration-source/' + filename + '.csv',
-            '/schemas/' + filename + '.json',
-            '/middleware/' + filename + '.py',
-        )
-
-    return "success"
+    return convertFiles(filenames)
 
 
 @app.after_request
