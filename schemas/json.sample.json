@@ -1,10 +1,10 @@
 {
     "business_name": "{{ Title }}",
     "address": {
-        "street": "{{ Wpsl_address }}",
-        "city": "{{ Wpsl_city }}",
-        "state": "{{ Wpsl_state }}",
-        "zip": "{{ Wpsl_zip }}",
-        "country": "{{ Wpsl_country }}"
+        "street": "{{ wpsl_address }}",
+        "city": "{{ wpsl_city }}",
+        "state": "{{ wpsl_state }}",
+        "zip": "{{ wpsl_zip }}",
+        "country": "{{ wpsl_country }}"
     }
 }
