@@ -39,8 +39,11 @@ def load_middlware(filename):
     module_name = filename.replace('.py', '').replace('/middleware/', '.')
     spec = importlib.util.spec_from_file_location(module_name, path)
     module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+    try:
+        spec.loader.exec_module(module)
+        return module
+    except Exception as e:
+        return None
 
 
 def cleanup(file):
@@ -158,7 +161,7 @@ def index():
 @app.route('/translate')
 def translate():
     filenames = [
-        'customers',
+        'sample',
         # 'dealers',
         # 'orders',
         # 'products',
@@ -171,7 +174,7 @@ def translate():
             '/migration-source/' + filename + '.csv',
             '/schemas/' + filename + '.json',
             '/middleware/' + filename + '.py',
-            delimiter=',')
+        )
 
     return "success"
 
