@@ -88,6 +88,35 @@ def getColumnIndexes(reader, data_template):
         relevantColumns[value] = column_names.index(value)
     return relevantColumns
 
+
+def convert(
+        migration_source_pathname,
+        schema_pathname,
+        delimiter='|',
+        quotechar='"'):
+    schema = load_json(schema_pathname)
+    file, reader = load_csv(migration_source_pathname, delimiter, quotechar)
+
+    # Generate
+    data_template = flatten_json(schema)
+    relevantColumns = getColumnIndexes(reader, data_template)
+    # Generate entries from csv
+    entries = []
+    for row in reader:
+        entry = json.loads(replace_variables(
+            json.dumps(schema), row, relevantColumns))
+        entries.append(entry)
+
+    cleanup(file)
+
+    # Make filename
+    filename = file.name.replace(
+        'migration-source', 'migrated').rsplit('.', maxsplit=1)[0] + '.json'
+    with open(filename, 'w') as outfile:
+        json.dump(entries, outfile)
+
+    return json.dumps(entries)
+
 # Flask Routes
 
 
@@ -98,30 +127,27 @@ def index():
 
 @app.route('/translate')
 def translate():
-    schema = load_json('/schemas/json.sample.json')
-    file, reader = load_csv('/migration-source/csv.sample.csv')
+    sources = [
+        # '/migration-source/customers.csv',
+        # '/migration-source/dealers.csv',
+        # '/migration-source/orders.csv',
+        # '/migration-source/products.csv',
+        # '/migration-source/reviews.csv'
+    ]
 
-    # Generate
-    data_template = flatten_json(schema)
-    relevantColumns = getColumnIndexes(reader, data_template)
+    schemas = [
+        # '/schemas/customers.json',
+        # '/schemas/dealers.json',
+        # '/schemas/orders.json',
+        # '/schemas/products.json',
+        # '/schemas/reviews.json'
+    ]
 
-    # Generate entries from csv
-    entries = []
-    for row in reader:
-        entry = json.loads(replace_variables(
-            json.dumps(schema), row, relevantColumns))
-        entries.append(entry)
+    for i in range(0, len(sources)):
+        app.logger.info(i)
+        convert(sources[i], schemas[i])
 
-    cleanup(file)
-    response = json.dumps(entries)
-
-    # Make filename
-    filename = file.name.replace(
-        'migration-source', 'migrated').rsplit('.', maxsplit=1)[0] + '.json'
-    with open(filename, 'w') as outfile:
-        json.dump(entries, outfile)
-
-    return response
+    return "success"
 
 
 @app.after_request
