@@ -49,6 +49,23 @@ Put JSON Schemas in `/schemas/`
 }
 ```
 
+## Creating Middlewares
+
+You can create functions that match column names to cast types or parse values into certain formats. If the module exists for the file and the column name exists as a function it will run on every iteration.
+
+Put Middlewares in `/middleware/`
+```
+# from flask import current_app as app
+# use above import to access app.logger for troubleshooting
+
+# all function names should be in PascalCase
+# ie column_name/key = sign uP
+#    function name = SignUp
+def Title(value):
+    value = value.lower().title()
+    return value
+```
+
 ## Quick start
 Inside this repo is a docker-compose file that will launch a flask app locally for you to test the converter. I will turn this into a package eventually but it's still under development
 
