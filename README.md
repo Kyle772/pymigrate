@@ -1,6 +1,6 @@
 # Pymigrate - v0.0.1
 
-Takes CSV files and converts them to json using a schema as a structure. Primarily built to assist with wordpress migrations but can easily be expanded to migrate any CSV file to any JSON structure.
+Takes CSV files and converts them to json using a schema as a structure. This was primarily built to assist with wordpress -> strapi migrations but can migrate any CSV file to any JSON structure.
 
 Give it a shot!
 
