@@ -4,6 +4,19 @@ Takes CSV files and converts them to json using a schema as a structure. Primari
 
 Give it a shot!
 
+## Running
+
+Run `pymigrate.convert(migration_source_pathname, schema_pathname, delimiter, quotechar)`
+
+Your converted file in json format will be generated and saved into `/migrated/`
+
+`csv.sample.json`
+```
+[{"business_name": "Sample Business", "address": {"street": "123 Address st", "city": "San Diego", "state": "CA", "zip": "12312", "country": "United States"}}]
+```
+
+## Setting up templates and sources
+
 Put CSV files in `/migration-sources/`
 
 `/migration-sources/csv.sample.csv`
@@ -36,14 +49,8 @@ Put JSON Schemas in `/schemas/`
 }
 ```
 
-Run pymigrate.convert(migration_source_pathname, schema_pathname)
-
-Your converted file in json format will be generated and saved into `/migrated/`
-
-`csv.sample.json`
-```
-[{"business_name": "Sample Business", "address": {"street": "123 Address st", "city": "San Diego", "state": "CA", "zip": "12312", "country": "United States"}}]
-```
+## Quick start
+Inside this repo is a docker-compose file that will launch a flask app locally for you to test the converter. I will turn this into a package eventually but it's still under development
 
 # Todo
 Implement Jinja to allow for functions inside of the json tempalate (importing multiple object in one entry for example)
