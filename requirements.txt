@@ -9,3 +9,4 @@ MarkupSafe==1.1.1
 itsdangerous==1.1.0
 Werkzeug==1.0.1
 python-dotenv==0.20.0
+pydash==5.1.0
