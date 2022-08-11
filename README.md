@@ -1,4 +1,4 @@
-# Pymigrate - v0.0.0.1 - stable and working - not easy to use yet
+# Pymigrate - v0.0.1
 
 Takes CSV files and converts them to json using a schema as a structure. Primarily built to assist with wordpress migrations but can easily be expanded to migrate any CSV file to any JSON structure.
 
@@ -6,7 +6,9 @@ Give it a shot!
 
 ## Running
 
-Run `pymigrate.convert(migration_source_pathname, schema_pathname, delimiter, quotechar)`
+Run `pymigrate.convert(migration_source_pathname, schema_pathname, middleware_pathname, delimiter, quotechar)`
+OR
+Run `pymigrate.convertFiles(["sample", "customers", "products"], delimeter="|", quotechar=",")`
 
 Your converted file in json format will be generated and saved into `/migrated/`
 
@@ -72,6 +74,6 @@ def Title(value):
 Inside this repo is a docker-compose file that will launch a flask app locally for you to test the converter. I will turn this into a package eventually but it's still under development
 
 # Todo
-Implement Jinja to allow for functions inside of the json tempalate (importing multiple object in one entry for example)
+Get this set up as a package without flask as a requirement
 
 Please submit issues and PRs with feature additions! I will likely only update this for my own use until this gets a following.
