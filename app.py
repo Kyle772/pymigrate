@@ -4,10 +4,8 @@ import os
 
 import json
 import csv
-from pandas.io.json import json_normalize
-import pydash
-import functools
 import re
+import importlib.util
 
 app = Flask(__name__)
 load_dotenv()
@@ -17,7 +15,6 @@ load_dotenv()
 def load_json(filename):
     path = os.path.abspath(os.path.dirname(__file__)) + \
         filename
-    # app.logger.info(path)
     f = open(path, 'r', encoding='utf-8-sig')
     data = json.load(f)
     f.close()
@@ -35,18 +32,38 @@ def load_csv(filename, delimiter='|', quotechar='"'):
     return file, reader
 
 
+def load_middlware(filename):
+    path = os.path.abspath(os.path.dirname(__file__)) + \
+        filename
+    # extract filename from /middleware/' + filename + '.py'
+    module_name = filename.replace('.py', '').replace('/middleware/', '.')
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def cleanup(file):
     file.close()
     return file
 
 
 # Templating
-def replace_variables(json_string, data, lookup):
+def parseMiddleware(key, value, middleware):
+    try:
+        func_name = key.title().replace(' ', '')  # sign Up -> SignUp
+        middleware_function = getattr(middleware, func_name)
+        return middleware_function(value)
+    except:
+        return value
+
+
+def replace_variables(json_string, data, lookup, middleware):
     # Lookup is a dictionary of column name to index
     for key, value in lookup.items():
-        app.logger.info(key, value)
+        value = parseMiddleware(key, data[lookup[key]], middleware)
         json_string = re.sub(r'{{ (.*' + key + '?) }}',
-                             data[lookup[key]], json_string)
+                             value, json_string)
     return json_string
 
 
@@ -96,10 +113,12 @@ def getColumnIndexes(reader, data_template):
 def convert(
         migration_source_pathname,
         schema_pathname,
+        middleware_pathname,
         delimiter='|',
         quotechar='"'):
     schema = load_json(schema_pathname)
     file, reader = load_csv(migration_source_pathname, delimiter, quotechar)
+    middleware = load_middlware(middleware_pathname)
 
     # Generate
     data_template = flatten_json(schema)
@@ -107,8 +126,16 @@ def convert(
     # Generate entries from csv
     entries = []
     for row in reader:
-        entry = json.loads(replace_variables(
-            json.dumps(schema), row, relevantColumns))
+        entry_string = replace_variables(
+            json.dumps(schema),
+            row,
+            relevantColumns,
+            middleware
+        )
+        # clean up any empty key value pairs
+        entry_string = re.sub(r'(, "\w+": "")|("\w+": "",)',
+                              '', entry_string)
+        entry = json.loads(entry_string)
         entries.append(entry)
 
     cleanup(file)
@@ -130,25 +157,21 @@ def index():
 
 @app.route('/translate')
 def translate():
-    sources = [
-        # '/migration-source/customers.csv',
-        # '/migration-source/dealers.csv',
-        # '/migration-source/orders.csv',
-        # '/migration-source/products.csv',
-        # '/migration-source/reviews.csv'
+    filenames = [
+        'customers',
+        # 'dealers',
+        # 'orders',
+        # 'products',
+        # 'reviews',
     ]
 
-    schemas = [
-        # '/schemas/customers.json',
-        # '/schemas/dealers.json',
-        # '/schemas/orders.json',
-        # '/schemas/products.json',
-        # '/schemas/reviews.json'
-    ]
-
-    for i in range(0, len(sources)):
-        app.logger.info(i)
-        convert(sources[i], schemas[i], ",", '"')
+    # generate source files from filenames at /migration-source/xxx.csv
+    for filename in filenames:
+        convert(
+            '/migration-source/' + filename + '.csv',
+            '/schemas/' + filename + '.json',
+            '/middleware/' + filename + '.py',
+            delimiter=',')
 
     return "success"
 
