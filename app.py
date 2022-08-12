@@ -57,7 +57,9 @@ def parseMiddleware(key, value, middleware):
         func_name = key.title().replace(' ', '')  # sign Up -> SignUp
         middleware_function = getattr(middleware, func_name)
         return middleware_function(value)
-    except:
+    except Exception as e:
+        # app.logger.info(e)
+        # app.logger.info(func_name)
         return value
 
 
@@ -65,8 +67,6 @@ def replace_variables(json_string, data, lookup, middleware):
     # Lookup is a dictionary of column name to index
     for key, value in lookup.items():
         value = parseMiddleware(key, data[lookup[key]], middleware)
-        app.logger.info(type(value))
-        app.logger.info(key)
 
         # check if value is an array
         if type(value) is list:
@@ -166,12 +166,11 @@ def convert(
             middleware
         )
         # clean up any empty key value pairs
-        entries.append(entry_string)
         entry_string = re.sub(r'(, "\w+": "")|("\w+": "",)',
                               '', entry_string)
 
         entry = json.loads(entry_string)
-        app.logger.info(entry)
+        entries.append(entry)
 
     cleanup(file)
 
