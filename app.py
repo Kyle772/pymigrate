@@ -65,8 +65,33 @@ def replace_variables(json_string, data, lookup, middleware):
     # Lookup is a dictionary of column name to index
     for key, value in lookup.items():
         value = parseMiddleware(key, data[lookup[key]], middleware)
-        json_string = re.sub(r'{{ (.*' + key + '?) }}',
+        app.logger.info(type(value))
+        app.logger.info(key)
+
+        # check if value is an array
+        if type(value) is list:
+            value = ",".join(value)
+        # check if value is a dictionary
+        elif type(value) is dict:
+            value = json.dumps(value)
+        # check if value is a string
+        elif type(value) is str:
+            value = '"' + value + '"'
+        # check if value is a number
+        elif type(value) is int or type(value) is float:
+            value = value
+        # check if value is a boolean
+        elif type(value) is bool:
+            value = value
+        # check if value is None
+        elif value is None:
+            value = ""  # these are stripped out in the end of convert()
+        else:
+            value = '"' + value + '"'
+
+        json_string = re.sub(r'\"{{ (.*' + key + '?) }}\"',
                              value, json_string)
+
     return json_string
 
 
@@ -108,8 +133,13 @@ def getColumnIndexes(reader, data_template):
     column_names = getColNames(reader)
     relevantColumns = {}
     for value in data_template.values():
-        value = value.replace("{{ ", '').replace(" }}", '')
-        relevantColumns[value] = column_names.index(value)
+        # Check if value is a string and if it contains "{{"
+        if type(value) is str and "{{" in value:
+            value = value.replace("{{ ", '').replace(" }}", '')
+            relevantColumns[value] = column_names.index(value)
+        else:
+            continue
+
     return relevantColumns
 
 
@@ -136,10 +166,12 @@ def convert(
             middleware
         )
         # clean up any empty key value pairs
+        entries.append(entry_string)
         entry_string = re.sub(r'(, "\w+": "")|("\w+": "",)',
                               '', entry_string)
+
         entry = json.loads(entry_string)
-        entries.append(entry)
+        app.logger.info(entry)
 
     cleanup(file)
 
@@ -149,8 +181,6 @@ def convert(
     with open(filename, 'w', encoding='utf-8-sig') as outfile:
         json.dump(entries, outfile)
 
-    return json.dumps(entries)
-
 
 def convertFiles(filenames, delimiter='|', quotechar='"'):
     # generate source files from filenames at /migration-source/xxx.csv
@@ -159,8 +189,8 @@ def convertFiles(filenames, delimiter='|', quotechar='"'):
             '/migration-source/' + filename + '.csv',
             '/schemas/' + filename + '.json',
             '/middleware/' + filename + '.py',
-            delimiter,
-            quotechar
+            delimiter=",",
+            quotechar='"'
         )
 
     return "success"
@@ -170,10 +200,10 @@ def convertFiles(filenames, delimiter='|', quotechar='"'):
 @app.route('/translate')
 def translate():
     filenames = [
-        'sample',
+        # 'sample',
         # 'dealers',
         # 'orders',
-        # 'products',
+        'products',
         # 'reviews',
     ]
 
